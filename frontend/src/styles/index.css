@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Quicksand:wght@300..700&family=Style+Script&family=Stylish&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Kanit", serif;
+}
+
+/* Global Custom Scrollbar Styles */
+html {
+  overflow-y: scroll; /* Ensure the vertical scrollbar appears */
+  /* scrollbar-color: rgba(128, 128, 128, 0.333) transparent; */
+  scrollbar-width: thin;
+}
+
+/* Webkit Scrollbar Customization */
+html::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+html::-webkit-scrollbar-track {
+  background: transparent; /* Track background */
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: rgba(
+    58,
+    162,
+    26,
+    0.301
+  ); /* Scrollbar thumb background color */
+  border-radius: 40px; /* Rounded corners */
+  border: 1px solid transparent; /* Optional border for better visuals */
+  background-clip: content-box; /* Clip background to the content box */
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(169, 169, 169, 0.406);
+}
