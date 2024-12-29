@@ -5,7 +5,19 @@
 @tailwind utilities;
 
 body {
+  position: relative;
+}
+
+body {
+  background: #eee;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+}
+
+body {
   font-family: "Kanit", serif;
+  /* background-color: #808080; */
 }
 
 /* Global Custom Scrollbar Styles */
