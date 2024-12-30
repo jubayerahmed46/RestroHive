@@ -3,7 +3,7 @@
 function Button1({ children, className = "" }) {
   return (
     <button
-      className={`py-3 px-5 rounded-lg font-normal uppercase border-b-4 border-black hover:border-y-4 transition-all duration-200 ${className}`}
+      className={`py-3 px-5 rounded-lg font-normal uppercase border-b-4 border-black  transition-all duration-200 ${className}`}
     >
       {children}{" "}
     </button>

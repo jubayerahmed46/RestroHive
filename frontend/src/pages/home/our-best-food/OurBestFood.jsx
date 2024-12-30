@@ -39,8 +39,8 @@ function OurBestFood() {
     <div>
       <Heading title={"CheckOut Our Best Foods"} smallTitle={"Should Try"} />
       <div className="grid lg:grid-cols-3 gap-5 sm:grid-cols-2">
-        {foods.map((food) => (
-          <FoodItemCard key={food.name} food={food} />
+        {foods.map((food, i) => (
+          <FoodItemCard key={i} food={food} />
         ))}
       </div>
     </div>

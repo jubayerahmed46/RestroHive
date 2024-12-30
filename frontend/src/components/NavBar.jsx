@@ -3,12 +3,14 @@ import { FaUserCircle } from "react-icons/fa";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useState } from "react";
 import { MdClose } from "react-icons/md";
+import DynamicTitles from "../features/DynamicTitles";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <nav className="bg-gray-900 text-white md:px-6 px-3 py-3 bg-opacity-60 fixed w-full z-30">
+      <DynamicTitles />
       <div className="flex justify-between items-center">
         {/* Logo Section */}
         <div className="flex items-center space-x-2">
