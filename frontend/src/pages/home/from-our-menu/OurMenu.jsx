@@ -13,7 +13,7 @@ function OurMenu() {
       <div>
         <Heading title={"OUR POPULAR ITEMS"} smallTitle={"Check it out"} />
       </div>
-      <CategoryItems items={menus} />
+      <CategoryItems items={menus} category={"popular"} />
       <div className="flex justify-center mt-5">
         <Button1 className="hover:bg-black hover:text-white">
           view full menu

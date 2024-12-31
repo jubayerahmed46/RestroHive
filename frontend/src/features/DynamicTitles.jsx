@@ -4,6 +4,8 @@ import { useLocation } from "react-router";
 function DynamicTitles() {
   const location = useLocation();
   const currentRoute = () => {
+    if (location.pathname.includes("/shop")) return "Shop";
+
     switch (location.pathname) {
       case "/":
         return "Home";

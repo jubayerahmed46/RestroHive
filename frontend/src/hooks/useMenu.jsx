@@ -1,23 +1,21 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-function useMenu({ category }) {
+function useMenu({ category, perPageItems: size, curPage: page }) {
   const [menus, setMenus] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setMenus([]);
     axios
-      .get("/menu.json")
+      .get(`http://localhost:5000/menus/${category}?size=${size}&page=${page}`)
       .then((res) => {
-        const filteredItems = res.data.filter(
-          (item) => item.category?.toLowerCase() === category?.toLowerCase()
-        );
-        setMenus(filteredItems);
+        setMenus(res.data);
       })
       .finally(() => {
         setLoading(false);
       });
-  }, [category]);
+  }, [category, page, size]);
+
   return [menus, loading];
 }
 

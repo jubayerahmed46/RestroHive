@@ -1,76 +1,84 @@
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import * as React from "react";
 import Box from "@mui/material/Box";
 import { tabs } from "./tabls";
 import useMenu from "../../hooks/useMenu";
-import FoodItemCard from "../../components/FoodItemCard";
 import { useLocation } from "react-router";
+import ShopCategoriesItems from "./ShopCategoriesItems";
+import Pagination from "./Pagination";
+import CategoryTabs from "./CategoryTabs";
+import { CustomTabPanel, a11yProps } from "./TabMeterials";
+import { useEffect, useState } from "react";
 
 function ShopCategories() {
-  return (
-    <div>
-      <ShopItemCategroyTabs />
-    </div>
-  );
-}
-
-export default ShopCategories;
-
-function ShopItemCategroyTabs() {
   const location = useLocation();
   let currIndex =
     !location.state || location.state === "offered"
       ? 0
       : tabs.findIndex((tab) => tab.category === location.state);
-  const [value, setValue] = React.useState(currIndex);
-  const [menus] = useMenu({ category: tabs[value].category });
+  const [value, setValue] = useState(currIndex);
+  const [menuData, setMenuData] = useState([]);
+  const perPageItems = 6;
+  const [curPage, setCurPage] = useState(0);
+  const [menus, loading] = useMenu({
+    category: tabs[value].category,
+    perPageItems,
+    curPage,
+  });
+
+  const totalPages = [
+    ...Array(Math.ceil(menus?.count / perPageItems || 0)).keys(),
+  ];
+  const paginationHandler = (page) => {
+    setCurPage(page);
+  };
+
+  useEffect(() => {
+    setMenuData(menus?.menus || []);
+  }, [menus]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const prevHandler = () => {
+    if (0 < curPage) {
+      setCurPage((prev) => prev - 1);
+    }
+  };
+  const nextHandler = () => {
+    if (totalPages.length - 1 > curPage) {
+      setCurPage((prev) => prev + 1);
+    }
+  };
+
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
+
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={value} onChange={handleChange} aria-label="shop tab">
-          {tabs.map((tab, i) => (
-            <Tab key={tab.id} label={tab.category} {...a11yProps(i)} />
-          ))}
-        </Tabs>
+    <div>
+      <Box sx={{ width: "100%" }}>
+        <CategoryTabs
+          handleChange={handleChange}
+          value={value}
+          a11yProps={a11yProps}
+          tabs={tabs}
+        />
+        <ShopCategoriesItems
+          menus={menuData}
+          tabs={tabs}
+          value={value}
+          CustomTabPanel={CustomTabPanel}
+        />
       </Box>
-      {tabs.map((_, i) => (
-        <CustomTabPanel key={i} value={value} index={i}>
-          <div className="grid lg:grid-cols-3 gap-5 sm:grid-cols-2">
-            {menus.map((item, i) => (
-              <FoodItemCard key={i} food={item} />
-            ))}
-          </div>
-        </CustomTabPanel>
-      ))}
-    </Box>
-  );
-}
-
-function CustomTabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      <Pagination
+        nextHandler={nextHandler}
+        curPage={curPage}
+        prevHandler={prevHandler}
+        totalPages={totalPages}
+        paginationHandler={paginationHandler}
+      />
     </div>
   );
 }
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
+export default ShopCategories;
