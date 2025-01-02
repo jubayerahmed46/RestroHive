@@ -5,7 +5,7 @@ import MenuCard from "./MenuCard";
 function CategoryItems({ items, category }) {
   return (
     <div>
-      <div className="grid md:grid-cols-2 md:gap-10 gap-5 ">
+      <div className="grid lg:grid-cols-2 md:gap-10 gap-5 ">
         {items?.menus.map((item) => (
           <MenuCard key={item._id} menu={item} />
         ))}

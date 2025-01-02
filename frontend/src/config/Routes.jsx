@@ -11,6 +11,9 @@ function Router() {
           <Route path="/menu" element={<Menu />} />
           <Route path="/shop" element={<OurShop />} />
         </Route>
+        <Route path="/auth" element={<p>AuthLeyout</p>}>
+          <Route></Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   );
