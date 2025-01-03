@@ -9,6 +9,7 @@ import {
   Signin,
   AuthLayout,
   Signup,
+  ErrorPage,
 } from ".";
 
 function Router() {
@@ -24,6 +25,7 @@ function Router() {
           <Route path="signin" element={<Signin />}></Route>
           <Route path="signup" element={<Signup />}></Route>
         </Route>
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
   );

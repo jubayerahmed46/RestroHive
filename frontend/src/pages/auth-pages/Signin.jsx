@@ -18,26 +18,35 @@ function Signin() {
   const [err, setErr] = useState("");
 
   const handleSignin = (data) => {
-    console.log(data);
+    setErr("");
     const key = reCaptchaRef.current.getValue();
     if (!key) {
-      console.log(key);
       setErr("You may be robot!");
       return;
     }
-    console.log(key);
 
     setLoader(true);
     signInWithEmailandPass(data.email, data.password)
       .then(() => {
-        console.log("signin successful!");
         setLoader(false);
         reset();
-        // navigate("/");
+        navigate("/");
         toast.success("Signin Successful!");
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            setErr("The email address is already in use!");
+            break;
+          case "auth/invalid-credential":
+            setErr("The credetial is invalid.");
+            break;
+          case "auth/weak-password":
+            setErr("The password is too weak.");
+            break;
+          default:
+            setErr("An error occurred: " + error.message);
+        }
         setLoader(false);
       });
   };
@@ -104,8 +113,8 @@ function Signin() {
                 />
               </div>
             </div>
-            <div>
-              <p className="text-error">{err} </p>
+            <div className="relative mb-5">
+              <p className="text-error absolute top-0">{err} </p>
             </div>
             <div className="mt-5">
               <button

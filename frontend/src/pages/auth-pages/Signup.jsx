@@ -19,23 +19,35 @@ function Signup() {
   const { signUpWithEmailAndPassword } = useAuth();
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
+  const [err, setErr] = useState("");
 
   const handleSignup = (data) => {
+    setErr("");
     setLoader(true);
-    console.log(data);
     signUpWithEmailAndPassword(data.email, data.password)
       .then((res) => {
         return updateProfile(res.user, { displayName: data.name });
       })
       .then(() => {
-        console.log("signup successful!");
         setLoader(false);
         reset();
         navigate("/");
         toast.success("Signup Successful!");
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            setErr("The email address is already in use!");
+            break;
+          case "auth/invalid-credential":
+            setErr("The credetial is invalid.");
+            break;
+          case "auth/weak-password":
+            setErr("The password is too weak.");
+            break;
+          default:
+            setErr("An error occurred: " + error.message);
+        }
         setLoader(false);
       });
   };
@@ -117,19 +129,22 @@ function Signup() {
                     className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                   />
                 </div>
-                <div className="text-error">
-                  <p>
-                    {errors.password?.type === "minLength" &&
-                      "the password must be 6 character"}{" "}
-                  </p>
-                  <p>
-                    {errors.password?.type === "maxLength" &&
-                      "the password not be 12 or more character"}{" "}
-                  </p>
-                  <p>
-                    {errors.password?.type === "pattern" &&
-                      "the password must be at least one uppercase, lowecase, disit, and a special charecter! "}{" "}
-                  </p>
+                <div className="text-error relative mb-5">
+                  <div className="absolute top-0">
+                    <p>
+                      {errors.password?.type === "minLength" &&
+                        "the password must be 6 character"}{" "}
+                    </p>
+                    <p>
+                      {errors.password?.type === "maxLength" &&
+                        "the password not be 12 or more character"}{" "}
+                    </p>
+                    <p>
+                      {errors.password?.type === "pattern" &&
+                        "the password must be at least one uppercase, lowecase, disit, and a special charecter! "}{" "}
+                    </p>
+                    <p className="text-error">{err} </p>
+                  </div>
                 </div>
               </div>
             </div>

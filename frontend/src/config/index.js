@@ -6,3 +6,4 @@ export { default as Home } from "../pages/home/Home";
 export { default as Menu } from "../pages/menu/Menu";
 export { default as OurShop } from "../pages/our-shop/OurShop";
 export { default as Signup } from "../pages/auth-pages/Signup";
+export { default as ErrorPage } from "../pages/error-page/ErrorPage";

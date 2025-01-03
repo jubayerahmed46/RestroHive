@@ -51,7 +51,7 @@ const Navbar = () => {
 
     toast((t) => (
       <span>
-        Are you<b>sure</b>?
+        Are you <b>sure</b>?
         <button
           onClick={() => toast.dismiss(t.id)}
           className="bg-gray-400 px-3 py-1 rounded-md shadow-inner mx-3 text-white"
