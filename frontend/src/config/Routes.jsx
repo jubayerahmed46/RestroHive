@@ -1,6 +1,15 @@
-import { BrowserRouter, Routes, Route, MainLayout, Home } from ".";
-import Menu from "../pages/menu/Menu";
-import OurShop from "../pages/our-shop/OurShop";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  MainLayout,
+  Home,
+  Menu,
+  OurShop,
+  Signin,
+  AuthLayout,
+  Signup,
+} from ".";
 
 function Router() {
   return (
@@ -11,8 +20,9 @@ function Router() {
           <Route path="/menu" element={<Menu />} />
           <Route path="/shop" element={<OurShop />} />
         </Route>
-        <Route path="/auth" element={<p>AuthLeyout</p>}>
-          <Route></Route>
+        <Route path="/auth" element={<AuthLayout />}>
+          <Route path="signin" element={<Signin />}></Route>
+          <Route path="signup" element={<Signup />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

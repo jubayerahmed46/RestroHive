@@ -13,6 +13,10 @@ export default {
           "50%": { transform: "translateY(-5px)" },
         },
       },
+      boxShadow: {
+        "auth-page":
+          " 0 4px 10px 0 rgba(0, 0, 0, 0.19), 0 6px 20px 0 rgba(0, 0, 0, 0.08)",
+      },
     },
   },
   plugins: [require("daisyui")],
