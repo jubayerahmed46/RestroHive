@@ -2,7 +2,7 @@ import { NavLink } from "react-router";
 import { FaUserCircle } from "react-icons/fa";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useState } from "react";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdOutlineShoppingCart } from "react-icons/md";
 import DynamicTitles from "../features/DynamicTitles";
 import cartIcon from "../assets/icon/cart.png";
 import useAuth from "../hooks/useAuth";
@@ -29,8 +29,8 @@ const Navbar = () => {
           `${className} ${
             isActive
               ? "text-yellow-300 focus:text-yellow-300 focus:no-underline hover:no-underline font-normal"
-              : "hover:text-yellow-400 no-underline text-white"
-          }`
+              : "hover:text-yellow-400 no-underline text-white hover:no-underline"
+          }  uppercase text-xs`
         }
         onClick={() => setIsMenuOpen(false)}
       >
@@ -80,11 +80,24 @@ const Navbar = () => {
         {/* Desktop Links */}
         <div className="hidden md:flex space-x-8 items-center font-extralight">
           {renderLinks()}
+        </div>
+
+        {/* Desktop Icons */}
+        <div className="hidden md:flex items-center space-x-6">
+          <NavLink
+            to="/cart"
+            className="relative  text-yellow-400 text-xl  hover:text-yellow-400 "
+          >
+            <MdOutlineShoppingCart />
+            <span className="absolute -top-3 -right-3  text-sm w-5  flex justify-center items-center aspect-square rounded-full bg-white text-black">
+              0
+            </span>
+          </NavLink>
           <div>
             {user ? (
               <button
                 onClick={handleLogout}
-                className="cursor-pointer hover:text-yellow-400 bg-black/60 text-white px-5 py-1 rounded-md"
+                className="cursor-pointer hover:text-white bg-black/60 text-white px-5 py-1 rounded-md"
               >
                 Logout
               </button>
@@ -97,13 +110,6 @@ const Navbar = () => {
               </NavLink>
             )}
           </div>
-        </div>
-
-        {/* Desktop Icons */}
-        <div className="hidden md:flex items-center space-x-6">
-          <NavLink to="/cart" className="relative hover:text-yellow-400">
-            <img src={cartIcon} className="h-8" alt="Cart" />
-          </NavLink>
           <NavLink to="/profile" className="hover:text-yellow-400">
             <FaUserCircle size={20} />
           </NavLink>

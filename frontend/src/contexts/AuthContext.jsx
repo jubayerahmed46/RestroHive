@@ -26,17 +26,21 @@ function AuthProvider({ children }) {
   }, []);
 
   const signUpWithEmailAndPassword = (email, pass) => {
+    setLoading(true);
     return createUserWithEmailAndPassword(auth, email, pass);
   };
   const signInWithEmailandPass = (email, pass) => {
+    setLoading(true);
     return signInWithEmailAndPassword(auth, email, pass);
   };
 
   const signInwithGoogle = () => {
+    setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
 
   const logoutUser = () => {
+    setLoading(true);
     return signOut(auth);
   };
 

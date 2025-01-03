@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 function Signin() {
   const reCaptchaRef = useRef();
   const { register, handleSubmit, reset } = useForm();
-  const { signInWithEmailandPass } = useAuth();
+  const { signInWithEmailandPass, signInwithGoogle } = useAuth();
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
   const [err, setErr] = useState("");
@@ -49,6 +49,15 @@ function Signin() {
         }
         setLoader(false);
       });
+  };
+
+  const handleGoogleSignIn = () => {
+    signInwithGoogle().then(() => {
+      navigate("/");
+      reset();
+
+      toast.success("Signup Successful!");
+    });
   };
   return (
     <div className="p-10 md:px-20">
@@ -113,7 +122,7 @@ function Signin() {
                 />
               </div>
             </div>
-            <div className="relative mb-5">
+            <div className="relative mb-8">
               <p className="text-error absolute top-0">{err} </p>
             </div>
             <div className="mt-5">
@@ -137,7 +146,10 @@ function Signin() {
             <p className="text-base mb-2">or sign in with</p>
             <div className="flex gap-3 text-3xl *:border-2 *:border-black *:rounded-full *:p-1 *:cursor-pointer">
               <TiSocialFacebook />
-              <button className="text-orange-600 text-xl">
+              <button
+                onClick={handleGoogleSignIn}
+                className="text-orange-600 text-xl"
+              >
                 <PiGoogleLogoBold />
               </button>
               <PiGithubLogoBold />

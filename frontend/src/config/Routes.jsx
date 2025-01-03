@@ -10,6 +10,7 @@ import {
   AuthLayout,
   Signup,
   ErrorPage,
+  DashBoardLayout,
 } from ".";
 
 function Router() {
@@ -25,6 +26,7 @@ function Router() {
           <Route path="signin" element={<Signin />}></Route>
           <Route path="signup" element={<Signup />}></Route>
         </Route>
+        <Route path="/dashboard" element={<DashBoardLayout />}></Route>
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
