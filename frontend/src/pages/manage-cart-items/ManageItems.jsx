@@ -4,7 +4,7 @@ import useAuthorizedUserCart from "../../hooks/useAuthorizedUserCart";
 
 function ManageItems() {
   const { data } = useAuthorizedUserCart({ withFoodData: true });
-  console.log(data);
+
   const totalPrice = data.reduce((acc, curr) => {
     return acc + curr.price;
   }, 0);

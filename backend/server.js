@@ -61,7 +61,7 @@ const client = new MongoClient(uri, {
         const query = { userEmail: email };
 
         const result = await cartColl.find(query).toArray();
-        if (withFoodData) {
+        if (withFoodData === "true") {
           const foodIds = result.map((item) => new ObjectId(item.foodId));
 
           const foodItems = await menuColl
