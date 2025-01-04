@@ -8,3 +8,4 @@ export { default as OurShop } from "../pages/our-shop/OurShop";
 export { default as Signup } from "../pages/auth-pages/Signup";
 export { default as ErrorPage } from "../pages/error-page/ErrorPage";
 export { default as DashBoardLayout } from "../layouts/DashBoardLayout";
+export { default as ManageItems } from "../pages/manage-cart-items/ManageItems";

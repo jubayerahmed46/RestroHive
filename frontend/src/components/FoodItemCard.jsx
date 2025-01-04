@@ -1,17 +1,46 @@
+import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import useUnAuthorizedCart from "../hooks/useUnAuthorizedCart";
 import { getData } from "../utils/localCartItems";
 import Button1 from "./Button1";
+import useAuthorizedUserCart from "../hooks/useAuthorizedUserCart";
+import useAxiosInstance from "../hooks/useAxiosInstance";
 
 function FoodItemCard({ food }) {
   const { user } = useAuth();
   const { handleUpdate } = useUnAuthorizedCart();
+  const { refetch } = useAuthorizedUserCart();
+  const axiosInstance = useAxiosInstance();
+
   const handleAddToCart = () => {
     if (!user) {
-      handleUpdate(food._id);
+      if (getData().includes(food._id)) {
+        return toast.error("item exist!");
+      }
+      toast.success("item added");
+      return handleUpdate(food._id);
+    } else {
+      const body = {
+        foodId: food._id,
+        userEmail: user.email,
+      };
+      (async function () {
+        try {
+          const { data } = await axiosInstance.post("/cart-items", body);
+
+          if (data.acknowledged) {
+            toast.success("item added in cart");
+            refetch();
+          }
+        } catch (error) {
+          console.log(error);
+          const existError = error?.response?.data?.message;
+          if (existError) {
+            toast.error(existError);
+          }
+        }
+      })();
     }
-    console.log("data is ", typeof getData());
-    console.log(food.name);
   };
   return (
     <div className="bg-slate-200">

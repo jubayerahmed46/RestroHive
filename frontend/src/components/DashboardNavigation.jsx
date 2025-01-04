@@ -12,7 +12,11 @@ function DashboardNavigation() {
   const dashboardRouts = [
     { name: "admin home", icon: <IoHomeSharp />, path: "admin-home" },
     { name: "add items", icon: <MdRestaurant />, path: "add-items" },
-    { name: "manage items", icon: <FaListUl />, path: "manage-items" },
+    {
+      name: "manage items",
+      icon: <FaListUl />,
+      path: "manage-cart-items",
+    },
     { name: "manage bookings", icon: <FaBook />, path: "manage-bookings" },
     { name: "all users", icon: <FaUsers />, path: "/all-users" },
   ];
@@ -33,8 +37,10 @@ function DashboardNavigation() {
             <NavLink
               className={({ isActive }) =>
                 `${
-                  isActive ? "font-bold text-white" : ""
-                } text-black hover:text-white hover:no-underline transition-all uppercase flex  gap-2 text-xs md:text-sm items-center`
+                  isActive
+                    ? "font-semibold bg-white text-black px-1 py-1 rounded-md"
+                    : ""
+                } text-black hover:bg-white px-1 py-1 rounded-md hover:text-black hover:no-underline transition-all uppercase flex  gap-2 text-xs md:text-sm items-center`
               }
               to={route.path}
             >
@@ -49,8 +55,10 @@ function DashboardNavigation() {
             <NavLink
               className={({ isActive }) =>
                 `${
-                  isActive ? "font-bold text-white" : ""
-                } text-black hover:text-white hover:no-underline transition-all uppercase flex  gap-2 text-xs md:text-sm items-center`
+                  isActive
+                    ? "font-semibold bg-white text-black px-1 py-1 rounded-md"
+                    : ""
+                } text-black hover:bg-white px-1 py-1 rounded-md hover:text-black hover:no-underline transition-all uppercase flex  gap-2 text-xs md:text-sm items-center`
               }
               to={route.path}
             >

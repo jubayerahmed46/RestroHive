@@ -7,11 +7,14 @@ import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
 import useUnAuthorizedCart from "../hooks/useUnAuthorizedCart";
 import { useState } from "react";
+import useAuthorizedUserCart from "../hooks/useAuthorizedUserCart";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logoutUser } = useAuth();
+  // unAuthorizeUser cart items
   const { cart } = useUnAuthorizedCart();
+  const { data: autorizedUserCart } = useAuthorizedUserCart();
 
   const navLinks = [
     { to: "/", label: "Home" },
@@ -86,12 +89,12 @@ const Navbar = () => {
         {/* Desktop Icons */}
         <div className="hidden md:flex items-center space-x-6">
           <NavLink
-            to="/dashboard/manage-items"
+            to="/dashboard/manage-cart-items"
             className="relative  text-yellow-400 text-xl  hover:text-yellow-400 "
           >
             <MdOutlineShoppingCart />
             <span className="absolute -top-3 -right-3  text-sm w-5  flex justify-center items-center aspect-square rounded-full bg-white text-black">
-              {cart}
+              {user ? autorizedUserCart.length : cart}
             </span>
           </NavLink>
           <div>

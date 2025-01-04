@@ -7,7 +7,6 @@ const CartProvider = ({ children }) => {
   const [cart, setCart] = useState(getData().length);
 
   const handleUpdate = (id) => {
-    console.log("update");
     setData(id);
     setCart(getData().length);
   };
