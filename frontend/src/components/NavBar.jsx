@@ -1,16 +1,17 @@
 import { NavLink } from "react-router";
 import { FaUserCircle } from "react-icons/fa";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { useState } from "react";
 import { MdClose, MdOutlineShoppingCart } from "react-icons/md";
 import DynamicTitles from "../features/DynamicTitles";
-import cartIcon from "../assets/icon/cart.png";
 import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
+import useUnAuthorizedCart from "../hooks/useUnAuthorizedCart";
+import { useState } from "react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logoutUser } = useAuth();
+  const { cart } = useUnAuthorizedCart();
 
   const navLinks = [
     { to: "/", label: "Home" },
@@ -85,12 +86,12 @@ const Navbar = () => {
         {/* Desktop Icons */}
         <div className="hidden md:flex items-center space-x-6">
           <NavLink
-            to="/cart"
+            to="/dashboard/manage-items"
             className="relative  text-yellow-400 text-xl  hover:text-yellow-400 "
           >
             <MdOutlineShoppingCart />
             <span className="absolute -top-3 -right-3  text-sm w-5  flex justify-center items-center aspect-square rounded-full bg-white text-black">
-              0
+              {cart}
             </span>
           </NavLink>
           <div>

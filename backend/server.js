@@ -24,6 +24,7 @@ const client = new MongoClient(uri, {
     await client.connect();
     const db = client.db("allItemsDB");
     const menuColl = db.collection("menu");
+    const cartColl = db.collection("cart-items");
 
     // get menu data
     app.get("/menus/:category", async (req, res) => {
@@ -45,6 +46,17 @@ const client = new MongoClient(uri, {
         });
         const menus = await menuColl.find({ category }, options).toArray();
         res.send({ menus, count: categoryItemsSize });
+      } catch (error) {
+        res.status(500).send({ message: "Internal server error!" });
+      }
+    });
+
+    // add cart items in cart collention
+    app.get("/cart-items", async (req, res) => {
+      try {
+        const doc = req.body;
+        const result = await cartColl.insertOne(doc);
+        res.send(result);
       } catch (error) {
         res.status(500).send({ message: "Internal server error!" });
       }

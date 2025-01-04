@@ -1,5 +1,66 @@
+import { IoHomeSharp } from "react-icons/io5";
+import { MdRestaurant } from "react-icons/md";
+import { FaListUl } from "react-icons/fa6";
+import { FaBook } from "react-icons/fa";
+import { FaUsers } from "react-icons/fa";
+import { IoMenu } from "react-icons/io5";
+import { FaShopify } from "react-icons/fa";
+import { MdOutlineMail } from "react-icons/md";
+import { NavLink } from "react-router";
+
 function DashboardNavigation() {
-  return <div>DashboardNavigation</div>;
+  const dashboardRouts = [
+    { name: "admin home", icon: <IoHomeSharp />, path: "admin-home" },
+    { name: "add items", icon: <MdRestaurant />, path: "add-items" },
+    { name: "manage items", icon: <FaListUl />, path: "manage-items" },
+    { name: "manage bookings", icon: <FaBook />, path: "manage-bookings" },
+    { name: "all users", icon: <FaUsers />, path: "/all-users" },
+  ];
+  const defaultRoutes = [
+    { name: "home", icon: <IoHomeSharp />, path: "/" },
+    { name: "menu", icon: <IoMenu />, path: "/shop" },
+    { name: "shop", icon: <FaShopify />, path: "/menu" },
+    { name: "contact", icon: <MdOutlineMail />, path: "/contact" },
+  ];
+  return (
+    <div className="bg-[#D1A054] py-5 px-3 h-full ">
+      <div>
+        <img src="/logo.png" className="w-10/12 brightness-0 " alt="" />
+      </div>
+      <ul className="mt-8 flex flex-col gap-3 border-b-2 pb-4">
+        {dashboardRouts.map((route) => (
+          <li key={route.name}>
+            <NavLink
+              className={({ isActive }) =>
+                `${
+                  isActive ? "font-bold text-white" : ""
+                } text-black hover:text-white hover:no-underline transition-all uppercase flex  gap-2 text-xs md:text-sm items-center`
+              }
+              to={route.path}
+            >
+              <span>{route.icon}</span> {route.name}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+      <ul className=" mt-5 flex flex-col gap-3 ">
+        {defaultRoutes.map((route) => (
+          <li key={route.name}>
+            <NavLink
+              className={({ isActive }) =>
+                `${
+                  isActive ? "font-bold text-white" : ""
+                } text-black hover:text-white hover:no-underline transition-all uppercase flex  gap-2 text-xs md:text-sm items-center`
+              }
+              to={route.path}
+            >
+              <span>{route.icon}</span> {route.name}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 export default DashboardNavigation;

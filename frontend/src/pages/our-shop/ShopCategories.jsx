@@ -31,6 +31,10 @@ function ShopCategories() {
     setCurPage(page);
   };
 
+  const handleTabChange = () => {
+    setCurPage(0);
+  };
+
   useEffect(() => {
     setMenuData(menus?.menus || []);
   }, [menus]);
@@ -62,6 +66,7 @@ function ShopCategories() {
           value={value}
           a11yProps={a11yProps}
           tabs={tabs}
+          handleTabChange={handleTabChange}
         />
         <ShopCategoriesItems
           menus={menuData}
