@@ -1,5 +1,5 @@
-import shop from "../../assets/shop/banner2.jpg";
-import PageBanner from "../../components/PageBanner";
+import shop from "../../../assets/shop/banner2.jpg";
+import PageBanner from "../../../components/PageBanner";
 import ShopCategories from "./ShopCategories";
 
 function OurShop() {

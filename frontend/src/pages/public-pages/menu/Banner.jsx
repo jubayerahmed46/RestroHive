@@ -1,5 +1,5 @@
-import PageBanner from "../../components/PageBanner";
-import menuImg from "../../assets/menu/banner3.jpg";
+import PageBanner from "../../../components/PageBanner";
+import menuImg from "../../../assets/menu/banner3.jpg";
 
 function Banner() {
   return (

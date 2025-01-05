@@ -1,20 +1,21 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import useAxiosPublic from "./useAxiosPublic";
 
 function useMenu({ category, perPageItems: size, curPage: page }) {
   const [menus, setMenus] = useState([]);
   const [loading, setLoading] = useState(true);
+  const axiosPublic = useAxiosPublic();
   useEffect(() => {
     setMenus([]);
-    axios
-      .get(`http://localhost:5000/menus/${category}?size=${size}&page=${page}`)
+    axiosPublic
+      .get(`/menus/${category}?size=${size}&page=${page}`)
       .then((res) => {
         setMenus(res.data);
       })
       .finally(() => {
         setLoading(false);
       });
-  }, [category, page, size]);
+  }, [category, page, size, axiosPublic]);
 
   return [menus, loading];
 }

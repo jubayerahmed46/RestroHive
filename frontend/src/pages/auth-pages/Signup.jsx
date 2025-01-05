@@ -6,8 +6,10 @@ import { TiSocialFacebook } from "react-icons/ti";
 import useAuth from "../../hooks/useAuth";
 import { updateProfile } from "firebase/auth";
 import { Loader } from "rsuite";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
+import uploadImg from "../../utils/uploadImg";
+import useAxiosInstance from "../../hooks/useAxiosInstance";
 
 function Signup() {
   const {
@@ -20,19 +22,37 @@ function Signup() {
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
   const [err, setErr] = useState("");
+  const fileRef = useRef(null);
+  const [fileName, setFileName] = useState("");
+  const axiosSecure = useAxiosInstance();
 
-  const handleSignup = (data) => {
+  // test
+  const handleFile = () => {
+    fileRef.current.click();
+  };
+
+  const handleSignup = async (data) => {
+    const img = fileRef.current.files[0];
+
     setErr("");
     setLoader(true);
+    const image = await uploadImg(img);
     signUpWithEmailAndPassword(data.email, data.password)
       .then((res) => {
-        return updateProfile(res.user, { displayName: data.name });
+        return updateProfile(res.user, {
+          displayName: data.name,
+          photoURL: image,
+        });
       })
-      .then(() => {
-        setLoader(false);
-        reset();
-        navigate("/");
-        toast.success("Signup Successful!");
+      .then(async () => {
+        const userInfo = { name: data.name, image, email: data.email };
+        const { data: result } = await axiosSecure.post(`/users`, userInfo);
+        if (result.insertedId) {
+          setLoader(false);
+          reset();
+          navigate("/");
+          toast.success("Signup Successful!");
+        }
       })
       .catch((error) => {
         switch (error.code) {
@@ -112,6 +132,41 @@ function Signup() {
                       autoComplete="email"
                       required
                       className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                    />
+                  </div>
+                </div>
+                <div className="sm:col-span-2">
+                  <label
+                    htmlFor="Upload Image"
+                    className="block text-sm/6 font-semibold text-gray-900"
+                  >
+                    image
+                  </label>
+
+                  <div
+                    className="mt-1 rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300   focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                    onClick={handleFile}
+                  >
+                    <button
+                      className=" px-3 py-1  text-sm bg-slate-600 text-white rounded-sm "
+                      type="button"
+                    >
+                      Upload Image
+                    </button>
+                    {fileName && (
+                      <span>
+                        {fileName.slice(0, 8)}....-.
+                        {fileName.split(".")[1]}
+                      </span>
+                    )}
+
+                    <input
+                      type="file"
+                      ref={fileRef}
+                      onChange={() =>
+                        setFileName(fileRef.current.files[0].name)
+                      }
+                      className="opacity-0 absolute -z-50  rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                     />
                   </div>
                 </div>

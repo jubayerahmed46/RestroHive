@@ -1,6 +1,6 @@
-import SectionBanner from "../../components/SectionBanner";
-import CategoryItems from "../../components/CategoryItems";
-import useMenu from "../../hooks/useMenu";
+import SectionBanner from "../../../components/SectionBanner";
+import CategoryItems from "../../../components/CategoryItems";
+import useMenu from "../../../hooks/useMenu";
 
 function Common({ category, title, img }) {
   const [menuItems, loading] = useMenu({ category });

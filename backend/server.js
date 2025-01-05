@@ -8,7 +8,7 @@ const app = express();
 
 // middlewares
 app.use(cors());
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.uf94k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -27,6 +27,7 @@ const client = new MongoClient(uri, {
     const db = client.db("allItemsDB");
     const menuColl = db.collection("menu");
     const cartColl = db.collection("cart-items");
+    const userColl = db.collection("users");
 
     // get menu data
     app.get("/menus/:category", async (req, res) => {
@@ -76,6 +77,59 @@ const client = new MongoClient(uri, {
       }
     });
 
+    // get all user data
+    app.get("/users/:email", async (req, res) => {
+      try {
+        const email = req.params.email;
+
+        const users = await userColl.find().toArray();
+        console.log(users);
+        res.send(users);
+      } catch (error) {
+        res.status(500).send({ message: "Internal server error!" });
+      }
+    });
+
+    // store/create user and set their role
+    app.post("/users", async (req, res) => {
+      try {
+        /**
+         * TODO:
+         * 1. take user data from request body : done
+         * 2. create a query and check is user already exist in data base : done
+         *    - if user already exist return and send error message with inserted id null : done
+         * 3. create a document of the user with the property of - name, image, email, role (manage here), Timestamp
+         * 4. store user in database send result to the client
+         * **/
+        const user = req.body;
+        const query = {
+          email: user.email,
+        };
+
+        const isUserExist = await userColl.findOne(query);
+        if (isUserExist) {
+          return res.send({
+            message: "user already exist!",
+            insertedId: false,
+          });
+        }
+
+        const isNoUser = await userColl.estimatedDocumentCount();
+        const timestamp = Date.now();
+        user.timestamp = timestamp;
+        if (!isNoUser) {
+          user.role = "admin";
+        } else {
+          user.role = "customer";
+        }
+
+        const result = await userColl.insertOne(user);
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: "Internal server error!" });
+      }
+    });
+
     // add cart items in cart collention
     app.post("/cart-items", async (req, res) => {
       try {
@@ -92,7 +146,7 @@ const client = new MongoClient(uri, {
             .send({ message: "Item already exists in the cart." });
         }
         const result = await cartColl.insertOne(doc);
-        console.log(result);
+
         res.send(result);
       } catch (error) {
         res.status(500).send({ message: "Internal server error!" });

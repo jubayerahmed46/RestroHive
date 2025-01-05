@@ -1,11 +1,11 @@
 import { Outlet } from "react-router";
-import DashboardNavigation from "../components/DashboardNavigation";
+import Sidebar from "../pages/dashboard/sidebar/Sidebar";
 
 function DashBoardLayout() {
   return (
     <div className="grid grid-cols-12 h-screen">
       <div className="md:col-span-2 col-span-3">
-        <DashboardNavigation />
+        <Sidebar />
       </div>
       <div className="md:col-span-10 col-span-9">
         <Outlet />

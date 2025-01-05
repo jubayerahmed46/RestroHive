@@ -1,4 +1,4 @@
-import FoodItemCard from "../../components/FoodItemCard";
+import FoodItemCard from "../../../components/FoodItemCard";
 
 function ShopCategoriesItems({ menus, tabs, value, CustomTabPanel }) {
   return (

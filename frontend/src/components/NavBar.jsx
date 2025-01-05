@@ -115,7 +115,13 @@ const Navbar = () => {
             )}
           </div>
           <NavLink to="/profile" className="hover:text-yellow-400">
-            <FaUserCircle size={20} />
+            {user?.photoURL && (
+              <img
+                src={user.photoURL}
+                className="h-8 w-8 rounded-full object-cover"
+                alt=""
+              />
+            )}
           </NavLink>
         </div>
 

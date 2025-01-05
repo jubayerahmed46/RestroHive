@@ -3,7 +3,6 @@ import useAxiosInstance from "./useAxiosInstance";
 import useAuth from "./useAuth";
 
 function useAuthorizedUserCart(props) {
-  console.log(props?.withFoodData);
   const axiosInstane = useAxiosInstance();
   const { user } = useAuth();
   const { data = [], refetch } = useQuery({

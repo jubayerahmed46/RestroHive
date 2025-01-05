@@ -13,6 +13,7 @@ import {
   DashBoardLayout,
   ManageItems,
 } from ".";
+import Users from "../pages/dashboard/admin/users/Users";
 
 function Router() {
   return (
@@ -29,6 +30,7 @@ function Router() {
         </Route>
         <Route path="/dashboard" element={<DashBoardLayout />}>
           <Route path="manage-cart-items" element={<ManageItems />} />
+          <Route path="users" element={<Users />} />
         </Route>
         <Route path="*" element={<ErrorPage />} />
       </Routes>

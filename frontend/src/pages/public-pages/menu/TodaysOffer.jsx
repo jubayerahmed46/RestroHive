@@ -1,6 +1,6 @@
-import CategoryItems from "../../components/CategoryItems";
-import Heading from "../../components/Heading";
-import useMenu from "../../hooks/useMenu";
+import CategoryItems from "../../../components/CategoryItems";
+import Heading from "../../../components/Heading";
+import useMenu from "../../../hooks/useMenu";
 
 function TodaysOffer() {
   const [offeredMenu, loading] = useMenu({ category: "offered" });

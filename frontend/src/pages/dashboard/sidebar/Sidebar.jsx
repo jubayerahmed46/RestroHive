@@ -8,7 +8,7 @@ import { FaShopify } from "react-icons/fa";
 import { MdOutlineMail } from "react-icons/md";
 import { NavLink } from "react-router";
 
-function DashboardNavigation() {
+function Sidebar() {
   const dashboardRouts = [
     { name: "admin home", icon: <IoHomeSharp />, path: "admin-home" },
     { name: "add items", icon: <MdRestaurant />, path: "add-items" },
@@ -18,7 +18,7 @@ function DashboardNavigation() {
       path: "manage-cart-items",
     },
     { name: "manage bookings", icon: <FaBook />, path: "manage-bookings" },
-    { name: "all users", icon: <FaUsers />, path: "/all-users" },
+    { name: "users", icon: <FaUsers />, path: "users" },
   ];
   const defaultRoutes = [
     { name: "home", icon: <IoHomeSharp />, path: "/" },
@@ -71,4 +71,4 @@ function DashboardNavigation() {
   );
 }
 
-export default DashboardNavigation;
+export default Sidebar;

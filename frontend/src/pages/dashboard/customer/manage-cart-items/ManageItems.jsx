@@ -1,6 +1,6 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
-import Heading from "../../components/Heading";
-import useAuthorizedUserCart from "../../hooks/useAuthorizedUserCart";
+import Heading from "../../../../components/Heading";
+import useAuthorizedUserCart from "../../../../hooks/useAuthorizedUserCart";
 
 function ManageItems() {
   const { data } = useAuthorizedUserCart({ withFoodData: true });

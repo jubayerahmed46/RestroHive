@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { tabs } from "./tabls";
-import useMenu from "../../hooks/useMenu";
+import useMenu from "../../../hooks/useMenu";
 import { useLocation } from "react-router";
 import ShopCategoriesItems from "./ShopCategoriesItems";
 import Pagination from "./Pagination";

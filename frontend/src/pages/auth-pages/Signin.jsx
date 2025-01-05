@@ -8,6 +8,7 @@ import { TiSocialFacebook } from "react-icons/ti";
 import useAuth from "../../hooks/useAuth";
 import { Loader } from "rsuite";
 import toast from "react-hot-toast";
+import useAxiosInstance from "../../hooks/useAxiosInstance";
 
 function Signin() {
   const reCaptchaRef = useRef();
@@ -16,6 +17,7 @@ function Signin() {
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
   const [err, setErr] = useState("");
+  const axiosSecure = useAxiosInstance();
 
   const handleSignin = (data) => {
     setErr("");
@@ -27,7 +29,14 @@ function Signin() {
 
     setLoader(true);
     signInWithEmailandPass(data.email, data.password)
-      .then(() => {
+      .then(async ({ user }) => {
+        const userInfo = {
+          name: data.email,
+          image: user.photoURL,
+          email: data.email,
+        };
+        const res = await axiosSecure.post(`/users`, userInfo);
+        console.log(res);
         setLoader(false);
         reset();
         navigate("/");
