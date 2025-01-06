@@ -1,6 +1,7 @@
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 const morgan = require("morgan");
 require("dotenv").config();
 const port = process.env.PORT || 5000;
@@ -10,6 +11,8 @@ const app = express();
 app.use(cors());
 // app.use(morgan("dev"));
 app.use(express.json());
+
+const secret_key = process.env.SECRET_KEY;
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.uf94k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -21,6 +24,22 @@ const client = new MongoClient(uri, {
   },
 });
 
+const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization;
+  console.log(token);
+  if (!token) {
+    return res.status(401).send({ massage: "unAuthorized Access" });
+  }
+
+  jwt.verify(token, secret_key, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({ massage: "unAuthorized Access" });
+    }
+    req.credential = decoded;
+    next();
+  });
+};
+
 (async function () {
   try {
     await client.connect();
@@ -28,6 +47,17 @@ const client = new MongoClient(uri, {
     const menuColl = db.collection("menu");
     const cartColl = db.collection("cart-items");
     const userColl = db.collection("users");
+
+    // create jwt
+    app.post("/create-jwt", (req, res) => {
+      try {
+        const payload = req.body;
+        const token = jwt.sign(payload, secret_key);
+        res.send({ token });
+      } catch (error) {
+        res.status(500).send({ message: "Internal server error!" });
+      }
+    });
 
     // get menu data
     app.get("/menus/:category", async (req, res) => {
@@ -77,14 +107,58 @@ const client = new MongoClient(uri, {
       }
     });
 
+    const verifyAdmin = async (req, res, next) => {
+      const email = req.credential.email;
+      const query = { email };
+      const user = await userColl.findOne(query);
+      const isAdmin = user.role === "admin";
+      if (!isAdmin) {
+        return res.status(403).send({ message: "forbidden access" });
+      }
+      next();
+    };
+
     // get all user data
-    app.get("/users/:email", async (req, res) => {
+    app.get("/users/:email", verifyToken, verifyAdmin, async (req, res) => {
+      try {
+        const users = await userColl.find().toArray();
+        res.send(users);
+      } catch (error) {
+        res.status(500).send({ message: "Internal server error!" });
+      }
+    });
+
+    // get a user data
+    app.get("/users/user/:email", async (req, res) => {
       try {
         const email = req.params.email;
 
-        const users = await userColl.find().toArray();
-        console.log(users);
-        res.send(users);
+        const user = await userColl.findOne({ email });
+        res.send(user);
+      } catch (error) {
+        res.status(500).send({ message: "Internal server error!" });
+      }
+    });
+
+    // get user role
+    app.get("/users/user/role/:email", async (req, res) => {
+      try {
+        const email = req.params.email;
+        const user = await userColl
+          .aggregate([
+            { $match: { email } },
+            {
+              $project: {
+                role: 1,
+                _id: 0,
+              },
+            },
+            {
+              $addFields: { role: "$role" },
+            },
+          ])
+          .toArray();
+        res.send(user[0]);
       } catch (error) {
         res.status(500).send({ message: "Internal server error!" });
       }
@@ -148,6 +222,20 @@ const client = new MongoClient(uri, {
         const result = await cartColl.insertOne(doc);
 
         res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: "Internal server error!" });
+      }
+    });
+    // upadate user role
+    app.patch("/users/user/role/:userId", async (req, res) => {
+      try {
+        const userId = req.params.userId;
+        const updateRole = req.body.role;
+        const query = { _id: new ObjectId(userId) };
+        const update = await userColl.updateOne(query, {
+          $set: { role: updateRole },
+        });
+        res.send(update);
       } catch (error) {
         res.status(500).send({ message: "Internal server error!" });
       }
