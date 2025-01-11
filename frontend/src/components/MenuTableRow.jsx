@@ -56,7 +56,7 @@ function MenuTableRow({ item, seriul, refetch }) {
         <td>{item.name}</td>
         <td>
           {" "}
-          <span className="text-2xl">৳</span>
+          <p className="text-2xl">৳</p>
           {item.price}
         </td>
         <td className="flex text-xl gap-5 justify-center items-center h-full mt-4">

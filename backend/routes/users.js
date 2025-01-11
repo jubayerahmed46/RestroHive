@@ -24,8 +24,9 @@ const router = express.Router();
 router.get("/:email", verifyToken, verifyAdmin, async (req, res) => {
   try {
     const userColl = getCollection("users");
+    const email = req.params.email;
 
-    const users = await userColl.find().toArray();
+    const users = await userColl.find({ email: { $ne: email } }).toArray();
     res.send(users);
   } catch (error) {
     res.status(500).send({ message: "Internal server error!" });
