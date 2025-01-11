@@ -8,6 +8,7 @@ import { CustomProvider } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import { CartProvider } from "./contexts/UnauthenticatedCartContext.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
 /**
  * To implement tanstack query
  * create queryClient
@@ -25,6 +26,7 @@ createRoot(document.getElementById("root")).render(
           <QueryClientProvider client={queryClient}>
             <CartProvider>
               <Router />
+              <Toaster position="top-right" reverseOrder={false} />
             </CartProvider>
           </QueryClientProvider>
         </AuthProvider>

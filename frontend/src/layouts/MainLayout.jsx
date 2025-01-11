@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import Navbar from "../components/NavBar";
 import Footer from "../components/Footer";
-import { Toaster } from "react-hot-toast";
+
 import useAuth from "../hooks/useAuth";
 import Spinner from "../features/Spinner";
 
@@ -18,8 +18,6 @@ function MainLayout() {
         <Outlet />
       </div>
       <Footer />
-
-      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 }

@@ -7,6 +7,7 @@ import Pagination from "./Pagination";
 import CategoryTabs from "./CategoryTabs";
 import { CustomTabPanel, a11yProps } from "./TabMeterials";
 import { useEffect, useState } from "react";
+import LoadingCartState from "./LoadingCartState";
 
 function ShopCategories() {
   const location = useLocation();
@@ -54,10 +55,6 @@ function ShopCategories() {
     }
   };
 
-  if (loading) {
-    return <h2>Loading...</h2>;
-  }
-
   return (
     <div>
       <Box sx={{ width: "100%" }}>
@@ -68,12 +65,17 @@ function ShopCategories() {
           tabs={tabs}
           handleTabChange={handleTabChange}
         />
-        <ShopCategoriesItems
-          menus={menuData}
-          tabs={tabs}
-          value={value}
-          CustomTabPanel={CustomTabPanel}
-        />
+
+        {loading ? (
+          <LoadingCartState />
+        ) : (
+          <ShopCategoriesItems
+            menus={menuData}
+            tabs={tabs}
+            value={value}
+            CustomTabPanel={CustomTabPanel}
+          />
+        )}
       </Box>
       <Pagination
         nextHandler={nextHandler}

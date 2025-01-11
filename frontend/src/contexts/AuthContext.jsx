@@ -45,15 +45,29 @@ function AuthProvider({ children }) {
   };
 
   useEffect(() => {
-    const authObserver = onAuthStateChanged(auth, (userCredential) => {
+    const authObserver = onAuthStateChanged(auth, async (userCredential) => {
       setUser(userCredential);
       setLoading(false);
       console.log(userCredential);
+      if (userCredential) {
+        if (!localStorage.getItem("access-token")) {
+          const { data } = await axiosSecure.post(`/create-jwt`, {
+            id: userCredential.uid,
+            email: userCredential.email,
+          });
+          localStorage.setItem("access-token", data.token);
+        }
+      } else {
+        // logout remove token
+        if (localStorage.getItem("access-token")) {
+          localStorage.removeItem("access-token");
+        }
+      }
     });
 
     // unmount the observer
     return () => authObserver();
-  }, []);
+  }, [axiosSecure]);
 
   const authInfo = {
     signUpWithEmailAndPassword,

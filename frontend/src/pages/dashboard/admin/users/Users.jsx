@@ -2,20 +2,43 @@ import Heading from "../../../../components/Heading";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../../hooks/useAuth";
 import useAxiosInstance from "../../../../hooks/useAxiosInstance";
+import Spinner from "../../../../features/Spinner";
+import { FaTrash } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 function Users() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const axiosSecure = useAxiosInstance();
-  const { data: users, isLoading } = useQuery({
+  const {
+    data: users,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: [user?.email, "users"],
+    enabled: !loading && !!user?.email,
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/users/${user?.email}`);
-      console.log(data);
       return data;
     },
   });
 
-  if (isLoading) return;
+  const handleUpdateRole = async (e, userId) => {
+    try {
+      const { data } = await axiosSecure.patch(`/users/user/role/${userId}`, {
+        role: e.target.value,
+      });
+      if (data.modifiedCount) {
+        toast.success("Role update successfully");
+        refetch();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div>
@@ -27,9 +50,9 @@ function Users() {
           <thead className="bg-[#D1A054] rounded-full  text-white/90 ">
             <tr className="font-light uppercase rounded-full">
               <th></th>
-              <th>item image</th>
-              <th>item name</th>
-              <th>price</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
               <th>actions</th>
             </tr>
           </thead>
@@ -39,16 +62,23 @@ function Users() {
                 className="border-1 border-yellow-500 border-t-0"
                 key={user._id}
               >
-                <th> {i + 1} </th>
-                <td>
-                  <div className="avatar">
-                    <div className="mask mask-squircle h-12 w-12"></div>
-                  </div>
-                </td>
+                <td> {i + 1} </td>
+
                 <td>{user.name} </td>
                 <td>{user.email}</td>
                 <td className="flex text-xl gap-5 justify-center items-center h-full mt-4">
-                  {user.role}
+                  <select
+                    defaultValue={user.role}
+                    onChange={(e) => handleUpdateRole(e, user._id)}
+                  >
+                    <option value="admin">admin</option>
+                    <option value="customer">customer</option>
+                    <option value="manager">manager</option>
+                  </select>
+                </td>
+                <td>
+                  {" "}
+                  <FaTrash />{" "}
                 </td>
               </tr>
             ))}

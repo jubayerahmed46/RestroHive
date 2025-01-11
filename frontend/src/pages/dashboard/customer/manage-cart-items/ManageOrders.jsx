@@ -2,7 +2,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import Heading from "../../../../components/Heading";
 import useAuthorizedUserCart from "../../../../hooks/useAuthorizedUserCart";
 
-function ManageItems() {
+function ManageOrders() {
   const { data } = useAuthorizedUserCart({ withFoodData: true });
 
   const totalPrice = data.reduce((acc, curr) => {
@@ -72,4 +72,4 @@ function ManageItems() {
   );
 }
 
-export default ManageItems;
+export default ManageOrders;

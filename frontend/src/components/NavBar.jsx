@@ -43,7 +43,6 @@ const Navbar = () => {
     ));
 
   const handleLogout = () => {
-    console.log("trigered");
     const logginOut = (id) => {
       toast.promise(logoutUser(), {
         loading: "Processing...",
@@ -114,7 +113,7 @@ const Navbar = () => {
               </NavLink>
             )}
           </div>
-          <NavLink to="/profile" className="hover:text-yellow-400">
+          <NavLink to="/dashboard/profile" className="hover:text-yellow-400">
             {user?.photoURL && (
               <img
                 src={user.photoURL}
